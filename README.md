@@ -9,11 +9,11 @@ Format: Shapefile or GeoTIFF
 - Which are industrial or already degraded (good candidates)
 
 When download and unzip the CORINE dataset, there's a bunch of files in the CORINE Shapefile:
-    CLC2018_CZ.shp
-    CLC2018_CZ.dbf
-    CLC2018_CZ.shx
-    CLC2018_CZ.prj
-    ...
+CLC2018_CZ.shp
+CLC2018_CZ.dbf
+CLC2018_CZ.shx
+CLC2018_CZ.prj
+...
 all files are necessary for GeoPandas.
 These form a shapefile, and they go together like gin and tonic. The key file is .shp, but .dbf holds the attribute data (what kind of land it is), and .prj gives you the projection info (so maps don’t look like drunk spaghetti).
 
