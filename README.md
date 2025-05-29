@@ -9,11 +9,13 @@ Format: Shapefile or GeoTIFF
 - Which are industrial or already degraded (good candidates)
 
 When download and unzip the CORINE dataset, there's a bunch of files in the CORINE Shapefile:
-    CLC2018_CZ.shp
-    CLC2018_CZ.dbf
-    CLC2018_CZ.shx
-    CLC2018_CZ.prj
-    ...
+```
+CLC2018_CZ.shp
+CLC2018_CZ.dbf
+CLC2018_CZ.shx
+CLC2018_CZ.prj
+...
+```
 all files are necessary for GeoPandas.
 These form a shapefile, and they go together like gin and tonic. The key file is .shp, but .dbf holds the attribute data (what kind of land it is), and .prj gives you the projection info (so maps don’t look like drunk spaghetti).
 
@@ -21,3 +23,15 @@ These form a shapefile, and they go together like gin and tonic. The key file is
 https://www.eea.europa.eu/en/datahub/datahubitem-view/6fc8ad2d-195d-40f4-bdec-576e7d1268e4?activeAccordion=1095295%2C1095296
 A map of all protected sites under the EU’s Natura 2000 network — these areas are designated to preserve specific species and habitats.
 These are hard constraints — building transmission lines here is either impossible or extremely difficult.
+
+Parameters to consider:
+- existing grid + its deprecation grade
+- hills
+- species
+- prediction tool with options for different scenarios of the CO2 emmissions
+
+Checklist:
+1. Preprocess the Data
+2. Create scoring
+3. Separate areas by colours
+4. Implement the pathfinding algorithm

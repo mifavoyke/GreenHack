@@ -51,12 +51,12 @@ folium.GeoJson(
         'weight': 0.5
     }
 ).add_to(m)
-m.save('your_map.html')
+m.save('map.html')
 
 # visualise the map
 import matplotlib.pyplot as plt
 # urban = corine[corine['Code_18'].str.contains("112", case=False)]
 # urban.plot()
 # corine_small.plot()
-# corine.plot()
-# plt.show()
+corine.plot()
+plt.show()
