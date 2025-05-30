@@ -1,5 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# databases
+/models/corine_cz_2018
+
 # dependencies
 /node_modules
 /.pnp

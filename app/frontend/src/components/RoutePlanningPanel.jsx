@@ -22,6 +22,40 @@ export default function RoutePlanningPanel({
     }
   }
 
+  async function fetchPlannedRoute(routePoints, setPlannedRoute) {
+  if (routePoints.length < 2) return; // need at least 2 points
+
+  try {
+    const response = await fetch("http://localhost:5000/api/plan-route", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        points: routePoints.map(p => ({ x: p.lng, y: p.lat })),
+      }),
+    });
+
+    if (!response.ok) throw new Error("Network response was not ok");
+
+    const data = await response.json();
+
+    // Convert backend points (x,y) back to frontend lat/lng for rendering
+    const plannedRoutePoints = data.route.map((pt, i) => ({
+      id: i + 1,
+      order: i + 1,
+      lat: pt.y,
+      lng: pt.x,
+    }));
+
+    // set planned route state
+    setPlannedRoute({
+      points: plannedRoutePoints,
+      totalLength: data.totalLength,
+    });
+  } catch (error) {
+    console.error("Failed to fetch planned route:", error);
+  }
+}
+
   return (
     <div className="route-panel">
       <div className="card-header">

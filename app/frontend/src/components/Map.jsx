@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react"
-import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents } from "react-leaflet"
+import { MapContainer, TileLayer, Marker, Popup, Polyline, useMapEvents, GeoJSON } from "react-leaflet"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
 
@@ -20,13 +20,15 @@ function MapClickHandler({ onMapClick }) {
   return null
 }
 
-export default function MapComponent({
-    center = [49.8, 15.0],
-    zoom = 7,
-    routePoints = [],
-    plannedRoute = null,
-    onMapClick = () => {},
+  export default function MapComponent({
+      center = [49.8, 15.0],
+      zoom = 7,
+      routePoints = [],
+      plannedRoute = null,
+      onMapClick = () => {},
+      geoData = null,
   }) {
+
   const mapRef = useRef(null)
 
   useEffect(() => {
@@ -35,7 +37,6 @@ export default function MapComponent({
     }
   }, [center, zoom])
 
-  // Create custom icons for route points
   const createNumberedIcon = (number) => {
     return L.divIcon({
       html: `<div style="background-color: #3b82f6; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);">${number}</div>`,
@@ -79,6 +80,23 @@ export default function MapComponent({
 
       {/* Planned Route */}
       {plannedRoute && <Polyline positions={plannedRoute.coordinates} color="#ef4444" weight={4} opacity={0.8} />}
+
+      {/* GeoJSON Layer */}
+      {geoData && (
+        <GeoJSON
+          data={geoData}
+          style={(feature) => ({
+            fillColor: feature.properties.impact_score > 5 ? "#ff0000" : "#00ff00",
+            color: "black",
+            weight: 0.5,
+          })}
+          onEachFeature={(feature, layer) => {
+            layer.bindPopup(
+              `<b>${feature.properties.CLC_name}</b><br/>Impact Score: ${feature.properties.impact_score}`
+            )
+          }}
+        />
+      )}
     </MapContainer>
   )
 }
