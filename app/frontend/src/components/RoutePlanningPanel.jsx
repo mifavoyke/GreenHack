@@ -33,7 +33,8 @@ export default function RoutePlanningPanel({
         points: routePoints.map(p => ({ x: p.lng, y: p.lat })),
       }),
     });
-
+    console.log("response for planner: ");
+    console.log(response);
     if (!response.ok) throw new Error("Network response was not ok");
 
     const data = await response.json();

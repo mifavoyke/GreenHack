@@ -14,7 +14,7 @@ L.Icon.Default.mergeOptions({
 
 export default function MapComponent({
     center = [49.8, 15.0],
-    zoom = 7,
+    zoom = 6,
     routePoints = [],
     plannedRoute = null,
     onMapClick = () => {},
@@ -46,6 +46,22 @@ export default function MapComponent({
       iconAnchor: [15, 15],
     })
   }
+
+  // color based on zones
+  const code18ColorMap = {
+  "211": "#00FF00", // Arable land – ideal
+  "231": "#40FF00", // Pastures – good
+  "321": "#80FF00", // Natural grasslands – acceptable
+  "324": "#FFFF00", // Transitional woodland-shrub – borderline
+  "311": "#FFC000", // Broad-leaved forest – not ideal
+  "312": "#FF8000", // Coniferous forest – worse
+  "313": "#FF4000", // Mixed forest – avoid
+  "111": "#FF0000", // Continuous urban fabric – no
+  "112": "#FF0000", // Discontinuous urban fabric – no
+  "121": "#C00000", // Industrial units – big no
+  "123": "#C00000", // Port areas – very big no
+  // Add more as needed
+};
 
   return (
     <MapContainer
@@ -86,11 +102,17 @@ export default function MapComponent({
       {geoData && (
         <GeoJSON
           data={geoData}
-          style={(feature) => ({
-            fillColor: feature.properties.impact_score > 5 ? "#ff0000" : "#00ff00",
-            color: "black",
-            weight: 0.5,
-          })}
+          style={(feature) => {
+            const code = feature.properties.Code_18;
+            const fillColor = code18ColorMap[code] || "#0000FF"; // Blue fallback for unknown
+            return {
+              fillColor,
+              color: "black",
+              weight: 0.1,
+            };
+          }}
+
+
           // onEachFeature={(feature, layer) => {
           //   layer.bindPopup(
           //     `<b>${feature.properties.CLC_name}</b><br/>Impact Score: ${feature.properties.impact_score}`
