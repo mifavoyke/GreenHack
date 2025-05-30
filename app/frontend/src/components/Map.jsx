@@ -11,24 +11,25 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png",
 })
 
-function MapClickHandler({ onMapClick }) {
-  useMapEvents({
-    click: (e) => {
-      onMapClick(e.latlng.lat, e.latlng.lng)
-    },
-  })
-  return null
-}
 
-  export default function MapComponent({
-      center = [49.8, 15.0],
-      zoom = 7,
-      routePoints = [],
-      plannedRoute = null,
-      onMapClick = () => {},
-      geoData = null,
-  }) {
+export default function MapComponent({
+    center = [49.8, 15.0],
+    zoom = 7,
+    routePoints = [],
+    plannedRoute = null,
+    onMapClick = () => {},
+    geoData = null,
+}) {
 
+  function MapClickHandler({ onMapClick }) {
+    useMapEvents({
+      click: (e) => {
+        onMapClick(e.latlng.lat, e.latlng.lng)
+      },
+    })
+    return null
+  }
+  
   const mapRef = useRef(null)
 
   useEffect(() => {
@@ -90,11 +91,11 @@ function MapClickHandler({ onMapClick }) {
             color: "black",
             weight: 0.5,
           })}
-          onEachFeature={(feature, layer) => {
-            layer.bindPopup(
-              `<b>${feature.properties.CLC_name}</b><br/>Impact Score: ${feature.properties.impact_score}`
-            )
-          }}
+          // onEachFeature={(feature, layer) => {
+          //   layer.bindPopup(
+          //     `<b>${feature.properties.CLC_name}</b><br/>Impact Score: ${feature.properties.impact_score}`
+          //   )
+          // }}
         />
       )}
     </MapContainer>

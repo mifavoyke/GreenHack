@@ -22,30 +22,12 @@ export default function BrowseContent() {
     }, [locationQuery])
 
     // FILTERING 
+    const [filters, setFilters] = useState({})
     const [geoData, setGeoData] = useState(null)
 
-    const handleApplyFilters = async (filters) => {
-      try {
-        const response = await fetch("http://localhost:5000/api/map-data", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(filters),
-        })
-
-        if (!response.ok) throw new Error("Failed to fetch GeoJSON")
-
-        const geojson = await response.json()
-        setGeoData(geojson)
-      } catch (error) {
-        console.error("Error applying filters:", error)
-      }
+    const handleApplyFilters = async (newFilters) => {
+      setFilters(newFilters);  // save filters state
     }
-
-    useEffect(() => {
-      console.log("Updated geoData:", geoData)
-    }, [geoData])
 
     const geocodeLocation = async (locationQuery) => {
       try {
@@ -73,6 +55,34 @@ export default function BrowseContent() {
         console.error("Geocoding error:", error)
       }
     }
+
+    useEffect(() => {
+      const fetchGeoData = async () => {
+        try {
+          // Include locationQuery in the request body or query as needed
+          const requestBody = {
+            ...filters,
+            location: locationQuery, // or handle server-side how you want
+          };
+
+          const response = await fetch("http://localhost:5000/api/map-data", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestBody),
+          });
+
+          if (!response.ok) throw new Error("Failed to fetch GeoJSON");
+
+          const geojson = await response.json();
+          setGeoData(geojson);
+        } catch (error) {
+          console.error("Error fetching geoData:", error);
+        }
+      };
+
+      fetchGeoData();
+    }, [filters, locationQuery]);
+
   // Check if coordinates are within Czech Republic bounds
   const isInCzechRepublic = (lat, lng) => {
     const bounds = {
