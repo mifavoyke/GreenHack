@@ -1,43 +1,34 @@
 import { useState } from "react"
 
-export default function FilterPanel() {
+export default function FilterPanel({ onApplyFilters }) {
   const [filters, setFilters] = useState({
     voltage: "",
     lineType: "",
-    capacity: 0,
-    region: "",
-    status: "",
+    lineStatus: "",
     landType: "",
     zone: "",
-    elevation: 0,
-    population: 0,
+    terrainType: "",
+    weatherCondition: "",
   })
 
   const handleFilterChange = (key, value) => {
     setFilters((prev) => ({ ...prev, [key]: value }))
   }
 
-  const handleApplyFilters = async () => {
-    try {
-      console.log("Applying filters:", filters)
-      // In real app, make API call to backend
-    } catch (error) {
-      console.error("Filter error:", error)
-    }
-  }
-
   const handleResetFilters = () => {
     setFilters({
-      voltage: "",
-      lineType: "",
-      capacity: 0,
-      region: "",
-      status: "",
-      landType: "",
-      zone: "",
-      elevation: 0,
-      population: 0,
+        voltage: "",
+        lineType: "",
+        lineStatus: "",
+        landType: "",
+        zone: "",
+        terrainType: "",
+        weatherCondition: "",
     })
+  }
+
+  const handleSubmit = () => {
+    onApplyFilters(filters)
   }
 
   return (
@@ -81,52 +72,21 @@ export default function FilterPanel() {
               <option value="">Select line type</option>
               <option value="overhead">Overhead</option>
               <option value="underground">Underground</option>
-              <option value="submarine">Submarine</option>
             </select>
           </div>
 
-          <div className="filter-group">
-            <label className="filter-label">Capacity (MW): {filters.capacity}</label>
-            <input
-              type="range"
-              className="slider"
-              min="0"
-              max="1000"
-              step="10"
-              value={filters.capacity}
-              onChange={(e) => handleFilterChange("capacity", Number.parseInt(e.target.value))}
-            />
-          </div>
-
-          <div className="filter-group">
-            <label className="filter-label">Region</label>
-            <select
-              className="select"
-              value={filters.region}
-              onChange={(e) => handleFilterChange("region", e.target.value)}
-            >
-              <option value="">Select region</option>
-              <option value="prague">Prague</option>
-              <option value="brno">Brno</option>
-              <option value="ostrava">Ostrava</option>
-              <option value="plzen">Plzen</option>
-            </select>
-          </div>
-
-          <div className="filter-group">
-            <label className="filter-label">Status</label>
-            <select
-              className="select"
-              value={filters.status}
-              onChange={(e) => handleFilterChange("status", e.target.value)}
-            >
-              <option value="">Select status</option>
-              <option value="active">Active</option>
-              <option value="planned">Planned</option>
-              <option value="maintenance">Maintenance</option>
-              <option value="decommissioned">Decommissioned</option>
-            </select>
-          </div>
+          <label className="filter-label">Line Status</label>
+          <select
+            className="select"
+            value={filters.lineStatus}
+            onChange={(e) => handleFilterChange("lineStatus", e.target.value)}
+          >
+            <option value="">Select line status</option>
+            <option value="active">Active</option>
+            <option value="planned">Planned</option>
+            <option value="maintenance">Maintenance</option>
+            <option value="decommissioned">Decommissioned</option>
+          </select>
 
           <div className="filter-group">
             <label className="filter-label">Land Type</label>
@@ -152,41 +112,43 @@ export default function FilterPanel() {
               onChange={(e) => handleFilterChange("zone", e.target.value)}
             >
               <option value="">Select zone</option>
-              <option value="residential">Residential</option>
+              {/* <option value="residential">Residential</option>
               <option value="commercial">Commercial</option>
               <option value="protected">Protected Area</option>
-              <option value="restricted">Restricted</option>
+              <option value="restricted">Restricted</option> */}
+              <option value="121">121</option>
+              <option value="211">211</option>
+              <option value="231">231</option>
+              <option value="311">311</option>
             </select>
           </div>
 
-          <div className="filter-group">
-            <label className="filter-label">Min Elevation (m): {filters.elevation}</label>
-            <input
-              type="range"
-              className="slider"
-              min="0"
-              max="2000"
-              step="50"
-              value={filters.elevation}
-              onChange={(e) => handleFilterChange("elevation", Number.parseInt(e.target.value))}
-            />
-          </div>
+          <label className="filter-label">Soil/Terrain type</label>
+          <select
+            className="select"
+            value={filters.terrainType}
+            onChange={(e) => handleFilterChange("terrainType", e.target.value)}
+          >
+            <option value="">Select terrain</option>
+            <option value="soft">Unstable/Soft Soil</option>
+            <option value="rocky">Rocky Terrain</option>
+            <option value="steep">Steep Hills</option>
+            <option value="seismic">Seismic Activity</option>
+          </select>
 
-          <div className="filter-group">
-            <label className="filter-label">Population Density: {filters.population}</label>
-            <input
-              type="range"
-              className="slider"
-              min="0"
-              max="10000"
-              step="100"
-              value={filters.population}
-              onChange={(e) => handleFilterChange("population", Number.parseInt(e.target.value))}
-            />
-          </div>
+          <label className="filter-label">Weather Conditions</label>
+          <select
+            className="select"
+            value={filters.weatherCondition}
+            onChange={(e) => handleFilterChange("weatherCondition", e.target.value)}
+          >
+            <option value="">Select weather</option>
+            <option value="flooded">Flooded Areas</option>
+            <option value="wetlands">Wetlands</option>
+          </select>
 
           <div className="filter-actions">
-            <button onClick={handleApplyFilters} className="btn btn-primary" style={{ flex: 1 }}>
+            <button onClick={handleSubmit} className="btn btn-primary">
               Apply Filters
             </button>
             <button onClick={handleResetFilters} className="btn btn-outline">

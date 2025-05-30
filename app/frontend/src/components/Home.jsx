@@ -59,7 +59,7 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="home-features">
+          {/* <div className="home-features">
             <div className="home-feature-card">
               <h3 className="home-feature-title blue">Interactive Maps</h3>
               <p className="home-feature-description">Explore detailed maps with infinite zoom capabilities</p>
@@ -72,7 +72,7 @@ export default function HomePage() {
               <h3 className="home-feature-title purple">Route Planning</h3>
               <p className="home-feature-description">Plan optimal transmission routes with distance calculations</p>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

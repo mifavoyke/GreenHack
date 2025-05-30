@@ -2,7 +2,7 @@
 
 :root {
   --eco-green: #41b743; /* You can replace this with your preferred green shade */
-  --eco-green-selected:rgb(51, 152, 40)1; /* You can replace this with your preferred green shade */
+  --eco-green-selected:rgb(32, 102, 24)1; /* You can replace this with your preferred green shade */
 }
 
 body {
@@ -115,7 +115,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: var(--eco-green--selected);
+  background-color: var(--eco-green-selected);
 }
 
 .btn-primary:disabled {
@@ -336,7 +336,6 @@ body {
 
 /* Home Page Styles */
 .home-container {
-  min-height: 100vh;
   background: linear-gradient(135deg, #dff8d7 0%, #f0faee 100%);
   padding: 4rem 0;
 }

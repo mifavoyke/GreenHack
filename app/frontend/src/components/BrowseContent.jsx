@@ -18,10 +18,35 @@ export default function BrowseContent() {
     const [showSidebar, setShowSidebar] = useState(true)
   
     useEffect(() => {
-      // ✅ Pass the string query, not the full location object
       geocodeLocation(locationQuery)
-    }, [locationQuery]) // Also: better to depend on `locationQuery` not `location`
-  
+    }, [locationQuery])
+
+    // FILTERING 
+    const [geoData, setGeoData] = useState(null)
+
+    const handleApplyFilters = async (filters) => {
+      try {
+        const response = await fetch("http://localhost:5000/api/map-data", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(filters),
+        })
+
+        if (!response.ok) throw new Error("Failed to fetch GeoJSON")
+
+        const geojson = await response.json()
+        setGeoData(geojson)
+      } catch (error) {
+        console.error("Error applying filters:", error)
+      }
+    }
+
+    useEffect(() => {
+      console.log("Updated geoData:", geoData)
+    }, [geoData])
+
     const geocodeLocation = async (locationQuery) => {
       try {
         const coordMatch = locationQuery.match(/^(-?\d+\.?\d*),\s*(-?\d+\.?\d*)$/)
@@ -101,23 +126,41 @@ export default function BrowseContent() {
   }
 
   const handlePlanRoute = async () => {
-    if (routePoints.length < 2) return
+  if (routePoints.length < 2) return;
 
-    try {
-      // Simulate backend request for route planning
-      const coordinates = routePoints.map((point) => [point.lat, point.lng])
+  try {
+    // Prepare coordinates as [{x: lng, y: lat}] for backend
+    const pointsForBackend = routePoints.map(point => ({ x: point.lng, y: point.lat }));
 
-      // Mock response - in real app, this would be your backend API
-      const mockRoute = {
-        coordinates: coordinates,
-        totalLength: Math.random() * 100 + 50, // Mock distance
-      }
+    const response = await fetch("http://localhost:5000/api/plan-route", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ points: pointsForBackend }),
+    });
 
-      setPlannedRoute(mockRoute)
+    if (!response.ok) throw new Error("Failed to fetch planned route");
+
+    const data = await response.json();
+
+    // Assuming backend returns { route: [{x, y}], totalLength }
+    const plannedPoints = data.route.map((pt, index) => ({
+      id: index + 1,
+      lat: pt.y,
+      lng: pt.x,
+      order: index + 1,
+    }));
+
+    setPlannedRoute({
+      coordinates: plannedPoints.map(p => [p.lat, p.lng]),
+      points: plannedPoints,
+      totalLength: data.totalLength,
+    });
     } catch (error) {
-      console.error("Route planning error:", error)
+      console.error("Route planning error:", error);
     }
-  }
+  };
 
   const handleExportRoute = (format) => {
     if (!plannedRoute) {
@@ -207,7 +250,7 @@ export default function BrowseContent() {
               </button>
             </div>
             <div className="tab-content">
-              {activeTab === "filters" && <FilterPanel />}
+              {activeTab === "filters" &&  <FilterPanel onApplyFilters={handleApplyFilters} />}
               {activeTab === "planning" && (
                 <RoutePlanningPanel
                   routePoints={routePoints}
@@ -231,6 +274,7 @@ export default function BrowseContent() {
             routePoints={routePoints}
             plannedRoute={plannedRoute}
             onMapClick={handleMapClick}
+            geoData={geoData}
           />
 
           {/* Toggle Button */}
