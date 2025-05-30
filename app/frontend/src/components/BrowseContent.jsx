@@ -36,7 +36,10 @@ export default function BrowseContent() {
           const lat = parseFloat(coordMatch[1])
           const lng = parseFloat(coordMatch[2])
           setMapCenter([lat, lng])
-          setMapZoom(12)
+          if (locationQuery == "Czech Republic")
+            setMapZoom(7)
+          else
+            setMapZoom(12)
           return
         }
   
@@ -49,7 +52,10 @@ export default function BrowseContent() {
           const lat = parseFloat(data[0].lat)
           const lng = parseFloat(data[0].lon)
           setMapCenter([lat, lng])
-          setMapZoom(12)
+          if (locationQuery == "Czech Republic")
+            setMapZoom(7)
+          else
+            setMapZoom(12)
         }
       } catch (error) {
         console.error("Geocoding error:", error)

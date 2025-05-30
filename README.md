@@ -35,3 +35,21 @@ Checklist:
 2. Create scoring
 3. Separate areas by colours
 4. Implement the pathfinding algorithm
+
+Data needed:
+- Energy infrastructure and its current condition
+- Protected areas and biodiversity / protected species
+- Transport and urban plans
+- Climate, hydrology and water bodies
+- Hills
+
+A* (pronounced "A-star") is a graph-based pathfinding algorithm. It finds the most efficient path between two nodes (e.g. points on a map), using:
+- g(n): cost from the start node to node n.
+- h(n): heuristic estimate of the cost from n to the goal.
+- f(n) = g(n) + h(n): total estimated cost of the cheapest path through n.
+Nodes could represent grid cells or specific points on your map, and the cost can be influenced by:
+- impact_score (from CORINE),
+- temperature or flooding risks (Copernicus),
+- legal constraints (Natura2000),
+- existing infrastructure (ZABAGED).
+cost = impact_score + temp_penalty + flood_penalty + legal_penalty
