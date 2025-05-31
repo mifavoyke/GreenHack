@@ -1,6 +1,7 @@
 # Green Hack
 
 [📄 View Full Presentation (PDF)](./your-presentation.pdf)
+<iframe src="./presentation.pdf" width="100%" height="600px" style="border: none;"></iframe>
 
 
 
