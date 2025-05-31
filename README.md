@@ -1,4 +1,11 @@
 # Green Hack
+
+[📄 View Full Presentation (PDF)](./your-presentation.pdf)
+
+
+
+
+
 ## CORINE Land Cover
 https://land.copernicus.eu/en/products/corine-land-cover
 Format: Shapefile or GeoTIFF
