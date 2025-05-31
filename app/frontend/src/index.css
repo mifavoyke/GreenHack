@@ -278,7 +278,7 @@ body {
 .navbar {
   background-color: white;
   border-bottom: 1px solid #e5e7eb;
-  padding: 0.75rem 0;
+  padding: 0.25rem 0;
 }
 
 .navbar-brand {
@@ -447,7 +447,7 @@ body {
 
 /* Browse Page Styles */
 .browse-container {
-  height: 100vh;
+  height: 95vh;
   display: flex;
   flex-direction: column;
 }
@@ -876,4 +876,3 @@ body {
   cursor: pointer;
   border: none;
 }
-

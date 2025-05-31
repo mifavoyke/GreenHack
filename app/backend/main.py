@@ -6,7 +6,7 @@ from plan import compute_multi_route
 
 app = Flask(__name__)
 
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 
 @app.route("/api/map-data", methods=["POST"])
 def get_filtered_map_data():
@@ -14,7 +14,7 @@ def get_filtered_map_data():
     print("Received filters:", filters)
 
     # Filtering logic — only apply if value is not empty
-    corine = gpd.read_file("/home/yhusieva/sgoinfre/GreenHack/models/data/CORINE/U2018_CLC2018_V2020_20u1.shp/U2018_CLC2018_V2020_20u1.shp")
+    corine = gpd.read_file("/home/zpiarova/projects/greenhack/models/corine_cz_2018/data/U2018_CLC2018_V2020_20u1.shp")
 
     if filters.get("zone"):
         try:

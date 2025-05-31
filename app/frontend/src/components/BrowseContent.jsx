@@ -62,6 +62,7 @@ export default function BrowseContent() {
       }
     }
 
+    // FETCHING ZONES MAP DATA =========================================================================================================
     useEffect(() => {
       const fetchGeoData = async () => {
         try {
@@ -89,6 +90,33 @@ export default function BrowseContent() {
       fetchGeoData();
     }, [filters, locationQuery]);
 
+  // FETCH TRANSMISSION LINED DATA ===============================================================================================================
+   const [transmissionLines200, setTransmissionLines200] = useState(null);
+
+  useEffect(() => {
+    async function fetchGeoData() {
+      const res = await fetch("https://ags.cuzk.cz/arcgis/rest/services/ZABAGED_POLOHOPIS/MapServer/88/query?f=geojson&where=NAPETI%20LIKE%20'%25220%'&outFields=*&returnGeometry=true&resultOffset=0&resultRecordCount=10000");
+      const data = await res.json();
+      setTransmissionLines200(data);
+    }
+
+    fetchGeoData();
+  }, []);
+
+  const [transmissionLines400, setTransmissionLines400] = useState(null);
+
+  useEffect(() => {
+    async function fetchGeoData() {
+      const res = await fetch("https://ags.cuzk.cz/arcgis/rest/services/ZABAGED_POLOHOPIS/MapServer/88/query?f=geojson&where=NAPETI%20LIKE%20'%25400%'&outFields=*&returnGeometry=true&resultOffset=0&resultRecordCount=10000");
+      const data = await res.json();
+      setTransmissionLines400(data);
+    }
+
+    fetchGeoData();
+  }, []);
+
+
+  // CLICK POINTS FOR ROUTE PLANNING ================================================================================================================================
   // Check if coordinates are within Czech Republic bounds
   const isInCzechRepublic = (lat, lng) => {
     const bounds = {
@@ -179,6 +207,8 @@ export default function BrowseContent() {
       console.error("Route planning error:", error);
     }
   };
+
+  // EXPORTING CALCULATED ROUTE DETAILS =========================================================================================================================
 
   const handleExportRoute = (format) => {
     if (!plannedRoute) {
@@ -293,6 +323,8 @@ export default function BrowseContent() {
             plannedRoute={plannedRoute}
             onMapClick={handleMapClick}
             geoData={geoData}
+            transmissionLines200={transmissionLines200}
+            transmissionLines400={transmissionLines400}
           />
 
           {/* Toggle Button */}
