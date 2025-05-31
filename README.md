@@ -1,10 +1,10 @@
 # Green Hack
 
 [📄 View Full Presentation (PDF)](./your-presentation.pdf)
-<iframe src="./presentation.pdf" width="100%" height="600px" style="border: none;"></iframe>
 
+<iframe src="presentation.pdf" width="100%" height="600px" style="border: none;"></iframe>
 
-
+[Green Clean Photo-centric Technology Pitch Deck Business Presentation.pdf](https://github.com/user-attachments/files/20533002/Green.Clean.Photo-centric.Technology.Pitch.Deck.Business.Presentation.pdf)
 
 
 ## CORINE Land Cover
