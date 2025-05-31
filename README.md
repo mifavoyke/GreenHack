@@ -24,11 +24,12 @@ https://www.eea.europa.eu/en/datahub/datahubitem-view/6fc8ad2d-195d-40f4-bdec-57
 A map of all protected sites under the EU’s Natura 2000 network — these areas are designated to preserve specific species and habitats.
 These are hard constraints — building transmission lines here is either impossible or extremely difficult.
 
+https://land.copernicus.eu/en/products/temperature-and-reflectance/10-daily-land-surface-temperature-thermal-condition-index-global-v1-0-5km
+https://land.copernicus.eu/en/products/soil-moisture/daily-surface-soil-moisture-v1.0
+
 Parameters to consider:
 - existing grid + its deprecation grade
 - hills
-- species
-- prediction tool with options for different scenarios of the CO2 emmissions
 
 Checklist:
 1. Preprocess the Data

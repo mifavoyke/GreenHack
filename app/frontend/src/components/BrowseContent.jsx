@@ -161,6 +161,8 @@ export default function BrowseContent() {
     const data = await response.json();
 
     // Assuming backend returns { route: [{x, y}], totalLength }
+    
+
     const plannedPoints = data.route.map((pt, index) => ({
       id: index + 1,
       lat: pt.y,

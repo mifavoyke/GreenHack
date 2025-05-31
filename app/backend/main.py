@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask import Response
 import geopandas as gpd
-from plan import plan_route as compute_route
+from plan import compute_multi_route
 
 app = Flask(__name__)
 
@@ -43,12 +43,10 @@ def route_endpoint():
         data = request.get_json()
         print("Received data:", data)
         input_points = data.get("points", [])
+        
+        planned_route, length = compute_multi_route(input_points)
 
-        start = input_points[0]
-        goal = input_points[1]
-
-        planned_route = compute_route(start['x'], start['y'], goal['x'], goal['y'])
-        return jsonify({"route": planned_route, "totalLength": 12.34})
+        return jsonify({"route": planned_route, "totalLength": length})
     except Exception as e:
         print("Error in /api/plan-route:", str(e))
         return jsonify({"error": str(e)}), 500
