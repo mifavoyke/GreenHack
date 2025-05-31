@@ -1,11 +1,11 @@
 # Green Hack
 
-[📄 View Full Presentation (PDF)](./your-presentation.pdf)
-
-<iframe src="presentation.pdf" width="100%" height="600px" style="border: none;"></iframe>
-
-[Green Clean Photo-centric Technology Pitch Deck Business Presentation.pdf](https://github.com/user-attachments/files/20533002/Green.Clean.Photo-centric.Technology.Pitch.Deck.Business.Presentation.pdf)
-
+<h1 align="center" style="color:#ffffff; background:#FF69B4; padding:20px; border-radius:12px; border: 4px dashed #FFD700;">
+  🎉 PRESENTATION 🎉<br>
+  <a href="./your-presentation.pdf" style="color:#ffffff; font-size:24px; text-decoration:underline;">
+    📄 View Full Presentation (PDF)
+  </a>
+</h1>
 
 ## CORINE Land Cover
 https://land.copernicus.eu/en/products/corine-land-cover
