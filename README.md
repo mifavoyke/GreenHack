@@ -1,6 +1,6 @@
 # Green Hack
 
-<h1 align="center" style="color:#ffffff; background:#FF69B4; padding:20px; border-radius:12px; border: 4px dashed #FFD700;">
+<h1 align="center" style="color:#55F03D; background:#FF69B4; padding:20px; border-radius:12px; border: 4px dashed #FFD700;">
   🎉 PRESENTATION 🎉<br>
   <a href="./your-presentation.pdf" style="color:#ffffff; font-size:24px; text-decoration:underline;">
     📄 View Full Presentation (PDF)
