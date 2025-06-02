@@ -2,7 +2,7 @@
 
 :root {
   --eco-green: #41b743; /* You can replace this with your preferred green shade */
-  --eco-green-selected:rgb(32, 102, 24)1; /* You can replace this with your preferred green shade */
+  --eco-green-selected:rgb(32, 102, 24); /* You can replace this with your preferred green shade */
 }
 
 body {

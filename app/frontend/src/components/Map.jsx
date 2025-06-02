@@ -13,7 +13,7 @@ L.Icon.Default.mergeOptions({
 })
 
 const code18ColorMap = {
-  "211": "#00FF00",
+  "211": "#39FF14",
   "231": "#40FF00",
   "321": "#80FF00",
   "324": "#FFFF00",
