@@ -4,6 +4,7 @@ import FilterPanel from "./FilterPanel"
 import RoutePlanningPanel from "./RoutePlanningPanel"
 import ReportingPanel from "./ReportingPanel"
 import MapComponent from "./Map"
+import { API_ROUTES } from "../api_config";
 
 export default function BrowseContent() {
     const location = useLocation()
@@ -44,7 +45,7 @@ export default function BrowseContent() {
         }
   
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(locationQuery)}&countrycodes=cz&limit=1`
+          `${process.env.REACT_APP_OPENSTREET_URL}/search?format=json&q=${encodeURIComponent(locationQuery)}&countrycodes=cz&limit=1`
         )
         const data = await response.json()
   
@@ -72,7 +73,7 @@ export default function BrowseContent() {
             location: locationQuery, // or handle server-side how you want
           };
 
-          const response = await fetch("http://localhost:5000/api/map-data", {
+          const response = await fetch(API_ROUTES.mapData, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(requestBody),
@@ -95,7 +96,7 @@ export default function BrowseContent() {
 
   useEffect(() => {
     async function fetchGeoData() {
-      const res = await fetch("https://ags.cuzk.cz/arcgis/rest/services/ZABAGED_POLOHOPIS/MapServer/88/query?f=geojson&where=NAPETI%20LIKE%20'%25220%'&outFields=*&returnGeometry=true&resultOffset=0&resultRecordCount=10000");
+      const res = await fetch(process.env.REACT_APP_ZABAGED_220V);
       const data = await res.json();
       setTransmissionLines200(data);
     }
@@ -107,7 +108,7 @@ export default function BrowseContent() {
 
   useEffect(() => {
     async function fetchGeoData() {
-      const res = await fetch("https://ags.cuzk.cz/arcgis/rest/services/ZABAGED_POLOHOPIS/MapServer/88/query?f=geojson&where=NAPETI%20LIKE%20'%25400%'&outFields=*&returnGeometry=true&resultOffset=0&resultRecordCount=10000");
+      const res = await fetch(process.env.REACT_APP_ZABAGED_400V);
       const data = await res.json();
       setTransmissionLines400(data);
     }
@@ -176,7 +177,7 @@ export default function BrowseContent() {
     // Prepare coordinates as [{x: lng, y: lat}] for backend
     const pointsForBackend = routePoints.map(point => ({ x: point.lng, y: point.lat }));
 
-    const response = await fetch("http://localhost:5000/api/plan-route", {
+    const response = await fetch(API_ROUTES.planRoute, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

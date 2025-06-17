@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { API_ROUTES } from "../api_config"
 
 export default function RoutePlanningPanel({
   routePoints,
@@ -26,7 +27,7 @@ export default function RoutePlanningPanel({
   if (routePoints.length < 2) return; // need at least 2 points
 
   try {
-    const response = await fetch("http://localhost:5000/api/plan-route", {
+    const response = await fetch(API_ROUTES.planRoute, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({

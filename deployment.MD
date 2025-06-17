@@ -37,7 +37,22 @@ git clone https://github.com/mifavoyke/GreenHack.git app
 cd greenhack/app/frontend
 
 ### build the frontend after change
-docker build -t my-react-frontend .
+docker build -t my-frontend .
 
 ### run the container 
-docker run -d -p 80:80 --name react-frontend my-react-frontend
+docker run -d -p 80:80 --name frontend my-frontend
+
+# BACKEND
+cd greenhack/app/backend
+
+##### do not need to use .venv inside a Docker container - Docker isolates everything inside the container so we are already using a clean Python environment via the base image (e.g., python:3.10-slim) so .venv would be redundant
+
+### build the backend after change
+docker build -t my-backend .
+
+### run the container 
+docker run -d -p 5000:5000 --name backend my-backend
+
+
+
+
