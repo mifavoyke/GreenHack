@@ -45,7 +45,7 @@ export default function BrowseContent() {
         }
   
         const response = await fetch(
-          `${process.env.REACT_APP_OPENSTREET_URL}/search?format=json&q=${encodeURIComponent(locationQuery)}&countrycodes=cz&limit=1`
+          `${process.env.REACT_APP_OPENSTREETMAP_URL}/search?format=json&q=${encodeURIComponent(locationQuery)}&countrycodes=cz&limit=1`
         )
         const data = await response.json()
   

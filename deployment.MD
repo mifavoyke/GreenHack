@@ -39,6 +39,18 @@ cd greenhack/app/frontend
 ### build the frontend after change
 docker build -t my-frontend .
 
+### !!! variables are stored in local .env file and inject environment variables at build time via --build-arg
+
+export $(cat .env | xargs)
+
+docker build  \
+--build-arg REACT_APP_API_URL=$REACT_APP_API_URL \
+--build-arg REACT_APP_OPENSTREETMAP_URL=$REACT_APP_OPENSTREETMAP_URL \
+--build-arg REACT_APP_ZABAGED_220V=$REACT_APP_ZABAGED_220V \
+--build-arg REACT_APP_ZABAGED_400V=$REACT_APP_ZABAGED_400V \
+-t my-frontend .
+
+
 ### run the container 
 docker run -d -p 80:80 --name frontend my-frontend
 
