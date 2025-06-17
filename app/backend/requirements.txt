@@ -1,13 +1,6 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-from flask import Response
-import geopandas as gpd
-from plan import compute_multi_route
-import heapq
-import numpy as np
-from rasterio.transform import rowcol
-import numpy as np
-import pickle
-from pyproj import Transformer
-from pathfinding import a_star
-from math import radians, sin, cos, sqrt, atan2
+flask
+flask-cors
+geopandas
+numpy
+rasterio
+pyproj

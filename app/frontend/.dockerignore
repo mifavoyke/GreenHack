@@ -1,0 +1,18 @@
+# Ignore node_modules — it's rebuilt during `npm install`
+node_modules/
+
+# Ignore build artifacts — we rebuild during Docker build
+build/
+
+# Git and local config files
+.git/
+.gitignore
+Dockerfile
+.dockerignore
+
+# OS or editor files
+*.log
+*.DS_Store
+# .env
+# .env.*  # Optional if you don't want to pass any .env files during build
+.vscode/

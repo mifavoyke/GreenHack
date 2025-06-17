@@ -10,8 +10,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
 
-COPY ../ ../modes
-
 # Expose Flask port
 EXPOSE 5000
 
