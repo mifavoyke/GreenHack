@@ -12,7 +12,7 @@ from rasterio.enums import Resampling as Rsp
 TARGET_CRS = "EPSG:5514"
 GRID_SHAPE = (1000, 1000)  # rows, cols
 
-cz_border = gpd.read_file("/home/yhusieva/sgoinfre/GreenHack/models/CZ_Shape/gadm41_CZE_shp/gadm41_CZE_2.shp")
+cz_border = gpd.read_file("../backend/corine.shp")
 cz_border = cz_border.to_crs(TARGET_CRS)
 
 # def process_temperature_raster(transform):
@@ -32,7 +32,7 @@ cz_border = cz_border.to_crs(TARGET_CRS)
 #     return normalised * 15  # moisture penalty
 
 def get_transform_and_bounds():
-    corine = gpd.read_file("/home/yhusieva/sgoinfre/GreenHack/models/data/CORINE/U2018_CLC2018_V2020_20u1.shp/U2018_CLC2018_V2020_20u1.shp")
+    corine = gpd.read_file("../backend/corine.shp")
     corine = corine.to_crs(TARGET_CRS)
     bounds = corine.total_bounds  # [minx, miny, maxx, maxy]
     
@@ -54,7 +54,7 @@ def rasterize_gdf(gdf, value_column, transform):
     return rasterize(shapes, out_shape=out_shape, transform=transform, fill=0, dtype='float32')
 
 def process_corine(transform, bounds_geom):
-    corine = gpd.read_file("/home/yhusieva/sgoinfre/GreenHack/models/data/CORINE/U2018_CLC2018_V2020_20u1.shp/U2018_CLC2018_V2020_20u1.shp")
+    corine = gpd.read_file("../backend/corine.shp")
     corine = corine.to_crs(TARGET_CRS)
     corine = corine[corine.geometry.intersects(bounds_geom)]
     
