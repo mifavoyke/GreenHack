@@ -14,7 +14,7 @@ def get_filtered_map_data():
     print("Received filters:", filters)
 
     # Filtering logic — only apply if value is not empty
-    corine = gpd.read_file("corine.shp")
+    corine = gpd.read_file("./corine.shp")
 
     if filters.get("zone"):
         try:
