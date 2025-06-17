@@ -1,0 +1,43 @@
+# SETUP FOR THE EC2 INSTANCE - user data script
+
+sudo apt update
+sudo apt install -y ca-certificates curl gnupg lsb-release
+
+### add officila docker key
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
+  sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+### add docker's apt repository
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release-cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+### update package list and install docker 
+sudo apt update
+sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+### run docker without sudo
+sudo usermod -aG docker $USER
+newgrp docker
+
+# Start Docker now - containers will not run unless manually started
+sudo systemctl start docker
+
+# Enable Docker to start on boot - so docker will automatically start when instance boots, so we do not have to start it manually
+sudo systemctl enable docker
+
+### install git and docker compose
+sudo apt install -y git
+sudo apt install docker-compose-plugin
+docker compose up -d
+
+### pull the code initially
+git clone https://github.com/mifavoyke/GreenHack.git app
+
+# FRONTEND 
+cd greenhack/app/frontend
+
+### build the frontend after change
+docker build -t my-react-frontend .
+
+### run the container 
+docker run -d -p 80:80 --name react-frontend my-react-frontend
