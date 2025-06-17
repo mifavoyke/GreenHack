@@ -26,4 +26,6 @@ COPY . .
 EXPOSE 5000
 
 # Run the app
-CMD ["python", "main.py"]
+# CMD ["python", "main.py"] # this only ran dev server on 127.0.0.1
+# gunicorn starts a production-ready server listening on all interfaces on port 5000 
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]

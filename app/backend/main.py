@@ -51,6 +51,7 @@ def route_endpoint():
         print("Error in /api/plan-route:", str(e))
         return jsonify({"error": str(e)}), 500
 
-#  running the Flask server
+# running the Flask server
+# 0.0.0.0: binds to all network interfaces, making your Flask app reachable from outside (e.g., your browser via the EC2 public IP).
 if __name__ == "__main__":
-    app.run(debug=True, port=5000)
+    app.run(host="0.0.0.0", debug=True, port=5000)
