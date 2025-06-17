@@ -50,7 +50,6 @@ docker build  \
 --build-arg REACT_APP_ZABAGED_400V=$REACT_APP_ZABAGED_400V \
 -t my-frontend .
 
-
 ### run the container 
 docker run -d -p 80:80 --name frontend my-frontend
 
