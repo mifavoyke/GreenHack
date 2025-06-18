@@ -41,6 +41,10 @@ cd greenhack/app/frontend
 
 ### !!! variables are stored in local .env file and inject environment variables at build time via --build-arg
 
+set -a
+source .env
+set +a
+
 export $(cat .env | xargs) && docker build  \
 --build-arg REACT_APP_API_URL=$REACT_APP_API_URL \
 --build-arg REACT_APP_OPENSTREETMAP_URL=$REACT_APP_OPENSTREETMAP_URL \
