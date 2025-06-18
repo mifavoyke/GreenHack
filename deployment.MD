@@ -62,6 +62,8 @@ docker build -t my-backend .
 ### run the container 
 docker run -d -p 5000:5000 --name backend my-backend
 
+### WHAT HAPPENS: cannot copy the corine db into docker as it is too big 
+
 
 
 

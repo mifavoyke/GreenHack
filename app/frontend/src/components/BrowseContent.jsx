@@ -37,46 +37,49 @@ export default function BrowseContent() {
           const lat = parseFloat(coordMatch[1])
           const lng = parseFloat(coordMatch[2])
           setMapCenter([lat, lng])
-          if (locationQuery == "Czech Republic")
-            setMapZoom(7)
-          else
-            setMapZoom(12)
-          return
+          setMapZoom(locationQuery === "Czech Republic" ? 7 : 12);
+          // Return a small bbox around the point
+          const delta = 0.05; // ca. 5km buffer
+          return [lat - delta, lng - delta, lat + delta, lng + delta];
         }
   
         const response = await fetch(
           `${process.env.REACT_APP_OPENSTREETMAP_URL}/search?format=json&q=${encodeURIComponent(locationQuery)}&countrycodes=cz&limit=1`
-        )
-        const data = await response.json()
+        );
+        const data = await response.json();
   
         if (data && data.length > 0) {
-          const lat = parseFloat(data[0].lat)
-          const lng = parseFloat(data[0].lon)
-          setMapCenter([lat, lng])
-          if (locationQuery == "Czech Republic")
-            setMapZoom(7)
-          else
-            setMapZoom(12)
+          const result = data[0];
+          const lat = parseFloat(result.lat);
+          const lng = parseFloat(result.lon);
+          setMapCenter([lat, lng]);
+          setMapZoom(locationQuery === "Czech Republic" ? 7 : 12);
+
+          const [south, north, west, east] = result.boundingbox.map(parseFloat);
+          return [south, west, north, east];
         }
+        throw new Error("No location found");
       } catch (error) {
-        console.error("Geocoding error:", error)
+        console.warn("Falling back to Czech Republic bounding box");
+        setMapCenter([49.8175, 15.4730]); // Rough Czech center
+        setMapZoom(7);
+        const DEFAULT_CZECH_BBOX = [48.5518, 12.0905, 51.0557, 18.8592];
+        return DEFAULT_CZECH_BBOX;
       }
     }
 
     // FETCHING ZONES MAP DATA =========================================================================================================
+
     useEffect(() => {
       const fetchGeoData = async () => {
         try {
-          // Include locationQuery in the request body or query as needed
-          const requestBody = {
-            ...filters,
-            location: locationQuery, // or handle server-side how you want
-          };
+          // include bounding box to not get unnecessary data
+          const bbox = await geocodeLocation(locationQuery); // [south, west, north, east]
 
           const response = await fetch(API_ROUTES.mapData, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestBody),
+            body: JSON.stringify({ bbox, zone: filters.zone }),
           });
 
           if (!response.ok) throw new Error("Failed to fetch GeoJSON");
@@ -87,12 +90,12 @@ export default function BrowseContent() {
           console.error("Error fetching geoData:", error);
         }
       };
-
       fetchGeoData();
     }, [filters, locationQuery]);
 
-  // FETCH TRANSMISSION LINED DATA ===============================================================================================================
-   const [transmissionLines200, setTransmissionLines200] = useState(null);
+  // FETCH TRANSMISSION LINES DATA ===============================================================================================================
+  // fetch 220V lines
+  const [transmissionLines200, setTransmissionLines200] = useState(null);
 
   useEffect(() => {
     async function fetchGeoData() {
@@ -104,6 +107,7 @@ export default function BrowseContent() {
     fetchGeoData();
   }, []);
 
+  // fetch 400V lines
   const [transmissionLines400, setTransmissionLines400] = useState(null);
 
   useEffect(() => {
@@ -115,7 +119,6 @@ export default function BrowseContent() {
 
     fetchGeoData();
   }, []);
-
 
   // CLICK POINTS FOR ROUTE PLANNING ================================================================================================================================
   // Check if coordinates are within Czech Republic bounds
@@ -191,7 +194,6 @@ export default function BrowseContent() {
 
     // Assuming backend returns { route: [{x, y}], totalLength }
     
-
     const plannedPoints = data.route.map((pt, index) => ({
       id: index + 1,
       lat: pt.y,

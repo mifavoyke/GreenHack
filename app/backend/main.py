@@ -10,31 +10,63 @@ CORS(app)
 
 @app.route("/api/map-data", methods=["POST"])
 def get_filtered_map_data():
-    filters = request.get_json()
-    print("Received filters:", filters)
+    # filters = request.get_json()
+    # print("Received filters:", filters)
+    data = request.get_json()
+    bbox = data.get("bbox")
+    # zone = data.get("zone")
 
-    # Filtering logic — only apply if value is not empty
-    corine = gpd.read_file("./corine.shp")
+    # Fallback: default bounding box for Czech Republic
+    if not bbox:
+        bbox = [12.0905752, 48.5518081, 18.8592531, 51.0557008]
 
-    if filters.get("zone"):
+    # Create bounding box string: xmin, ymin, xmax, ymax
+    geometry_param = ",".join(map(str, bbox))
+
+     # Parameters for ArcGIS REST API /query endpoint
+    params = {
+        "f": "geojson",  # Get proper FeatureCollection as GeoJSON
+        "geometry": geometry_param,
+        "geometryType": "esriGeometryEnvelope",
+        "spatialRel": "esriSpatialRelIntersects",
+        "inSR": 4326,
+        "outSR": 4326,
+        "outFields": "*",
+        "returnGeometry": "true", 
+        "resultOffset": 0,
+        "resultRecordCount": 1000,  # or max allowed
+    }
+
+    # # Filtering logic — only apply if value is not empty
+    # corine = gpd.read_file("./corine.shp")
+
+    try:
+        corine_url = "https://image.discomap.eea.europa.eu/arcgis/rest/services/Corine/CLC2018_WM/MapServer/0"
+        response = requests.get(corine_url, params=params, timeout=30)
+        response.raise_for_status()
         try:
-            zone_code = int(filters["zone"])
-            corine = corine[corine["Code_18"] == zone_code]
-        except ValueError:
-            pass     # If conversion fails, ignore the filter or handle error
+            geojson = response.json()
+        except Exception as e:
+            print("Failed to parse JSON")
+            raise e
 
-    # Example of other filters (adjust column names as needed)
-    # if filters.get("voltage"):
-    #     corine = corine[corine["voltage_column"] == filters["voltage"]]
+        # if zone:
+        #     try:
+        #         zone_code = int(zone)
+        #         geojson["features"] = [
+        #             f for f in geojson["features"]
+        #             if f["properties"].get("Code_18") == zone_code
+        #         ]
+        #     except ValueError:
+        #         pass  # Invalid zone filter
 
-    # if filters.get("lineType"):
-    #     corine = corine[corine["line_type_column"] == filters["lineType"]]
+        return jsonify(geojson)
 
-    # Add similar filters for lineStatus, zone, terrainType, weatherCondition if you have those columns
-
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
     # Return filtered GeoJSON
-    geojson = corine.to_crs(epsg=4326).to_json()
-    return Response(geojson, mimetype="application/json")
+    # geojson = corine.to_crs(epsg=4326).to_json()
+    # return Response(geojson, mimetype="application/json")
     
 # ROUTE PLANNING 
 @app.route("/api/plan-route", methods=["POST"])
