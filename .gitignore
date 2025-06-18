@@ -1,1 +1,6 @@
-app/backend/corine.shp
+app/backend/__pycache__
+app/backend/bin
+app/backend/include
+app/backend/lib
+app/backend/lib64
+app/backend/pyvenv.cfg
