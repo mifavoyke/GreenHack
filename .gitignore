@@ -4,3 +4,4 @@ app/backend/include
 app/backend/lib
 app/backend/lib64
 app/backend/pyvenv.cfg
+.env
