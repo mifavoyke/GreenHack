@@ -17,7 +17,7 @@ export default function BrowseContent() {
     const [mapCenter, setMapCenter] = useState([49.75, 15.5]) // Czech Republic center
     const [mapZoom, setMapZoom] = useState(7)
     const [showSidebar, setShowSidebar] = useState(true)
-  
+
     useEffect(() => {
       geocodeLocation(locationQuery)
     }, [locationQuery])
@@ -75,16 +75,20 @@ export default function BrowseContent() {
         try {
           // include bounding box to not get unnecessary data
           const bbox = await geocodeLocation(locationQuery); // [south, west, north, east]
-
           const response = await fetch(API_ROUTES.mapData, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ bbox, zone: filters.zone }),
           });
 
-          if (!response.ok) throw new Error("Failed to fetch GeoJSON");
+          if (!response.ok){
+              const errorText = await response.text();
+              console.error("Server returned error:", errorText);
+              throw new Error(`Server error: ${response.status}`);
+          };
 
           const geojson = await response.json();
+          console.log("GeoJSON received:", geojson);
           setGeoData(geojson);
         } catch (error) {
           console.error("Error fetching geoData:", error);
@@ -119,6 +123,10 @@ export default function BrowseContent() {
 
     fetchGeoData();
   }, []);
+
+  useEffect(() => {
+    alert("Loading the map may take up to 1 minute.");
+  }, []); // empty dependency array = run only once
 
   // CLICK POINTS FOR ROUTE PLANNING ================================================================================================================================
   // Check if coordinates are within Czech Republic bounds
