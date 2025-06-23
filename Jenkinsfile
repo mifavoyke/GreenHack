@@ -26,8 +26,8 @@ pipeline {
                         ]) {
                         sh '''
                             # Write envs to .env file dynamically
-                            echo "REACT_APP_API_URL=$RECT_APP_API_URL" > .env
-                            echo "REACT_APP_OPENSTREETMAP_URL=$RECT_APP_OPENSTREETMAP_URL" >> .env
+                            echo "REACT_APP_API_URL=$REACT_APP_API_URL" > .env
+                            echo "REACT_APP_OPENSTREETMAP_URL=$REACT_APP_OPENSTREETMAP_URL" >> .env
                             echo "REACT_APP_ZABAGED_220V=$REACT_APP_ZABAGED_220V" >> .env
                             echo "REACT_APP_ZABAGED_400V=$REACT_APP_ZABAGED_400V" >> .env
 
