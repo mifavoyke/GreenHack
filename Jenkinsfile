@@ -11,7 +11,7 @@ pipeline {
 
         stage('Clone repository') {
             steps {
-                git url: 'https://github.com/mifavoyke/GreenHack.git'
+                git branch:'main', url: 'https://github.com/mifavoyke/GreenHack.git'
             }
         }
 
