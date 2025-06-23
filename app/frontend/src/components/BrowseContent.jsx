@@ -248,6 +248,8 @@ export default function BrowseContent() {
         // This would generate a map image - for now just alert
         alert("Map export functionality would generate a PNG/PDF of the current map view")
         break
+      default:
+        break
     }
   }
 

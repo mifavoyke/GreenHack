@@ -52,8 +52,10 @@ add Dockerhub credentials into jenkins secrets
 <!-- install Docker -->
 sudo apt install -y docker.io
 sudo usermod -aG docker jenkins
+sudo usermod -aG docker $USER
 sudo systemctl restart jenkins
 docker --version
+exit the instanc and ssh back in
 
 <!-- install aws cli -->
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
@@ -71,8 +73,31 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update
 sudo apt install -y terraform
 
+<!-- install npm -->
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+npm -v
+
 ### Optimization to not overload t2.micro
 
+The htop command can be used ont eh instance anytime to monitor its memory and CPU utilization - to check if it is being overloaded. 
+
+To prevent it, I try adding some swap memory:
+```
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
+
+Extended the volume in AWS to 12GB. Then the filesystem must be extended inside the instance with commands:
+```
+sudo growpart /dev/sda1
+```
+
+More optimiztion steps taken: 
 1. limit jenkins memory by updating the /etc/default/jenkins file to have JAVA_ARGS="-Xmx512 -Xms256m -Djava.awt.headless=true"
 sudo systemctl restart jenkins
 2. limit jenkins to 1 executor in Manage JEnkins -> Configure System
