@@ -14,6 +14,10 @@ app = Flask(__name__)
 
 CORS(app)
 
+@app.route("/")
+def hello():
+    return "Hello from backend!"
+
 @app.route("/api/map-data", methods=["POST"])
 def get_filtered_map_data():
     # filters = request.get_json()

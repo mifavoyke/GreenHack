@@ -130,9 +130,10 @@ There re 2 types of service schedule strategies
 
 I created the cluster, the service, and the task, adding 2 containers. When the containers are pulled from CR locally, they work without problems. But I encountered an error, where the ECS starts the containers but something external sends the SIGTERM signal right away, making them stop. 
 
+I decided to let this go becasue I need a static entry point to the application, which can be either gainer by Route53 or ALB, both of which would incur costs. 
 
+Again, I decided to host it back on EC2 t2.micro as optimized, already built containers. 
 
-<!-- this setup was for one ec2 without jenkins - but it was too small to host 2 containers
 # SETUP FOR THE EC2 INSTANCE - user data script
 
 sudo apt update
@@ -144,7 +145,7 @@ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | \
   sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 
 ### add docker's apt repository
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release-cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 
 ### update package list and install docker 
 sudo apt update
@@ -165,8 +166,22 @@ sudo apt install -y git
 sudo apt install docker-compose-plugin
 docker compose up -d
 
-### pull the code initially
-git clone https://github.com/mifavoyke/GreenHack.git app
+<!-- pull the code initially -->
+<!-- git clone https://github.com/mifavoyke/GreenHack.git app -->
+
+
+for the tf script:
+0. ssh into the EC2 instance 
+0. remove old containers and images - but rather not, can we version them ? 
+1. pull the containers
+2. run them with proper port mappings
+3. 
+
+CAN SSH INTO CONTSINER WITH docker exec -it 92114e38a1dd /bin/sh ==> get a separate shell session attached to the container
+- docker exec does not affect or stop the main running process inside the container. It simply runs a new command or shell in addition to the existing processes.
+
+<!-- ERROR CURRENTLY: backend has internal server error because it times out before it can process the entire backend request -->
+
 
 # FRONTEND 
 cd greenhack/app/frontend
@@ -201,7 +216,7 @@ docker build -t my-backend .
 ### run the container 
 docker run -d -p 5000:5000 --name backend my-backend
 
-### WHAT HAPPENS: cannot copy the corine db into docker as it is too big  -->
+### WHAT HAPPENS: cannot copy the corine db into docker as it is too big
 
 
 
