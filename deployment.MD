@@ -126,7 +126,11 @@ On AWS ECS Console, I go to Create Cluster. Under Infrastructure I choose Fargat
 
 There re 2 types of service schedule strategies
 1. Replica - maintain desired number of tasks
-2. Daemon - deploys one task per one activ container instance 
+2. Daemon - deploys one task per one active container instance 
+
+I created the cluster, the service, and the task, adding 2 containers. When the containers are pulled from CR locally, they work without problems. But I encountered an error, where the ECS starts the containers but something external sends the SIGTERM signal right away, making them stop. 
+
+
 
 <!-- this setup was for one ec2 without jenkins - but it was too small to host 2 containers
 # SETUP FOR THE EC2 INSTANCE - user data script
