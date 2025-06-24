@@ -13,12 +13,18 @@ Then, I will automate the setup in the Jenkins pipeline adn terraform script to 
 
 These are the proposed steps (1-6 first manually, then automate it): 
 0. setup the Jenkins server 
-1. trigger on code commit 
-2. clone the repo
-3. build backned image from the new code
-4. build the frontend image from the new code
-5. if both are built, push them to ECR
-6. use terraform to get new images and deploy them to ECS
+1. on Jenkins, build backend and frontend images, nd push them to DOckerHub using a basic Jenkinsfile
+2. manually create ECS 
+3. automate the AWS rerource provisioning with terraform
+4. add triggering on code commit
+
+So the final Jenkins pipeline looks like:
+1. code commit trigger to clone the repo
+2. build frontend app and build frontend image 
+3. build backend image 
+4. push them to dockerhub
+5. trigger terraform build
+6. possibly store terraform files on S3
 
 ### 0. Setting up the Jenkins server
 
@@ -81,7 +87,8 @@ npm -v
 
 ### Optimization to not overload t2.micro
 
-The htop command can be used ont eh instance anytime to monitor its memory and CPU utilization - to check if it is being overloaded. 
+The htop command can be used on the instance anytime to monitor its memory and CPU utilization - to check if it is being overloaded.
+The df -h command shows storage consumption
 
 To prevent it, I try adding some swap memory:
 ```
@@ -92,9 +99,10 @@ sudo swapon /swapfile
 echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
 ```
 
-Extended the volume in AWS to 12GB. Then the filesystem must be extended inside the instance with commands:
+I also extended the volume in AWS to 12GB in AWS UI. Then the filesystem must be extended inside the instance with commands:
 ```
-sudo growpart /dev/sda1
+sudo growpart /dev/xvda 1
+sudo resize2fs /dev/xvda1
 ```
 
 More optimiztion steps taken: 
@@ -106,9 +114,19 @@ sudo systemctl restart jenkins
 5. clean docker regularly: docker system prune -af
 6. use terraform efficiently - minimal terraform apply runs, use -target if you want to update only specific resources, maybe store backend state on S3? 
 
-swap memory: 
+### 1. Creating JEnkinsfile
 
+The initial Jenkinsfile is simple, first just creates the images and pishes them to DockerHub. 
 
+But also while creating the Jenkinsfile I have to think about optimization for the small t2.micro instance. 
+
+### 2. Creating ECS Cluster
+
+On AWS ECS Console, I go to Create Cluster. Under Infrastructure I choose Fargate, which is Serverless and doesn't need to manage no EC2 instances. 
+
+There re 2 types of service schedule strategies
+1. Replica - maintain desired number of tasks
+2. Daemon - deploys one task per one activ container instance 
 
 <!-- this setup was for one ec2 without jenkins - but it was too small to host 2 containers
 # SETUP FOR THE EC2 INSTANCE - user data script
