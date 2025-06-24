@@ -63,7 +63,7 @@ def get_filtered_map_data():
         
         try:
             print(f"[DEBUG] Requesting offset {result_offset}", file=sys.stderr, flush=True)
-            response = requests.post(corine_url, data=params, headers={'Content-Type': 'application/x-www-form-urlencoded'}, timeout=30, url, stream=True)
+            response = requests.post(corine_url, data=params, stream=True, headers={'Content-Type': 'application/x-www-form-urlencoded'}, timeout=30)
             response.raise_for_status()
             data = response.json()
             

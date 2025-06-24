@@ -134,7 +134,7 @@ I decided to let this go becasue I need a static entry point to the application,
 
 Again, I decided to host it back on EC2 t2.micro as optimized, already built containers. 
 
-# SETUP FOR THE EC2 INSTANCE - user data script
+# SETUP FOR THE EC2 INSTANCE
 
 sudo apt update
 sudo apt install -y ca-certificates curl gnupg lsb-release
@@ -175,13 +175,14 @@ for the tf script:
 0. remove old containers and images - but rather not, can we version them ? 
 1. pull the containers
 2. run them with proper port mappings
-3. 
+
 
 CAN SSH INTO CONTSINER WITH docker exec -it 92114e38a1dd /bin/sh ==> get a separate shell session attached to the container
 - docker exec does not affect or stop the main running process inside the container. It simply runs a new command or shell in addition to the existing processes.
 
 <!-- ERROR CURRENTLY: backend has internal server error because it times out before it can process the entire backend request -->
 The container is running out of memory and CPU when executing backend. 
+
 I try to add swap memory.
 ```
 sudo fallocate -l 1G /swapfile
@@ -210,8 +211,9 @@ export $(cat .env | xargs) && docker build  \
 --build-arg REACT_APP_ZABAGED_400V=$REACT_APP_ZABAGED_400V \
 -t my-frontend .
 
-### run the container 
-docker run -d -p 80:80 --name frontend my-frontend
+### run the containers
+docker run -d --restart unless-stopped -p 80:80 --name frontend zuzanapiarova/frontend-img:latest
+docker run -p 5000:5000 --name backend zuzanapiarova/backend-img:latest
 
 # BACKEND
 cd greenhack/app/backend
@@ -223,9 +225,3 @@ docker build -t my-backend .
 
 ### run the container 
 docker run -d -p 5000:5000 --name backend my-backend
-
-### WHAT HAPPENS: cannot copy the corine db into docker as it is too big
-
-
-
-
