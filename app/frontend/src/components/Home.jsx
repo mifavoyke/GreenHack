@@ -24,7 +24,7 @@ export default function HomePage() {
         <div className="home-content">
           <div>
           <FontAwesomeIcon className="home-icon" icon={faSeedling} />
-            <h1 className="home-title">Plan energy transmission routes</h1>
+            <h1 className="home-title">Hello, Plan energy transmission routes</h1>
             <p className="home-subtitle">Explore and plan transmission routes across Czech Republic based on national data</p>
           </div>
 

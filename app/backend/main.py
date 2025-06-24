@@ -14,9 +14,15 @@ app = Flask(__name__)
 
 CORS(app)
 
+# Endpoint when no route 
 @app.route("/")
 def hello():
-    return "Hello from backend!"
+    return "Hello from backend!", 200
+
+# health checks
+@app.route("/health", methods=["GET"])
+def health_check():
+    return "OK", 200
 
 @app.route("/api/map-data", methods=["POST"])
 def get_filtered_map_data():

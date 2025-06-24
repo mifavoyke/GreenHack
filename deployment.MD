@@ -52,7 +52,7 @@ sudo systemctl start jenkins
 <!-- finish jenkins setup in browser -->
 jenkins should be now available at http://ec2-public-ip:8080
 password is stored in /var/lib/jenkins/secrets/initialAdminPassword - use sudo
-install necessary plugins for Jenkins - git, pipeline, nodejs, github integration, credentials binding, docker pipeline, maybe Amazon ECR, Pipeline: AWS Steps, Slack Notifier
+install necessary plugins for Jenkins - git, pipeline, nodejs, github integration, github branch source, credentials binding, docker pipeline, maybe Amazon ECR, Pipeline: AWS Steps, Slack Notifier
 add Dockerhub credentials into jenkins secrets 
 
 <!-- install Docker -->
@@ -213,7 +213,7 @@ export $(cat .env | xargs) && docker build  \
 
 ### run the containers
 docker run -d --restart unless-stopped -p 80:80 --name frontend zuzanapiarova/frontend-img:latest
-docker run -p 5000:5000 --name backend zuzanapiarova/backend-img:latest
+docker run -d --restart unless-stopped -p 5000:5000 --name backend zuzanapiarova/backend-img:latest
 
 # BACKEND
 cd greenhack/app/backend
@@ -225,3 +225,14 @@ docker build -t my-backend .
 
 ### run the container 
 docker run -d -p 5000:5000 --name backend my-backend
+
+### Automating with Jenkins
+
+Make sure your Jenkins server has the private key to access your EC2 (usually a .pem file).
+
+Add the SSH private key to Jenkins credentials (e.g., as a "SSH Username with private key" credential).
+
+Make sure your EC2 instance’s security group allows SSH from your Jenkins server.
+
+Triggering on code commit:
+1. in Jenkins, select the pipeline->configuration, and under dscription, select GitHub project, add project URL, and under triggers, select Github hook trigger for GitSCM polling. 
