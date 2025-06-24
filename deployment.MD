@@ -181,7 +181,15 @@ CAN SSH INTO CONTSINER WITH docker exec -it 92114e38a1dd /bin/sh ==> get a separ
 - docker exec does not affect or stop the main running process inside the container. It simply runs a new command or shell in addition to the existing processes.
 
 <!-- ERROR CURRENTLY: backend has internal server error because it times out before it can process the entire backend request -->
-
+The container is running out of memory and CPU when executing backend. 
+I try to add swap memory.
+```
+sudo fallocate -l 1G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+```
 
 # FRONTEND 
 cd greenhack/app/frontend

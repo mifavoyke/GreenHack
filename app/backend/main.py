@@ -47,7 +47,7 @@ def get_filtered_map_data():
     result_offset = 0
     page_size = 1000  # Max records per request
     
-    while result_offset < 30001:
+    while result_offset < 15001:
         params = {
             "f": "geojson",
             "geometry": json.dumps(esri_geometry_loaded),
@@ -63,7 +63,7 @@ def get_filtered_map_data():
         
         try:
             print(f"[DEBUG] Requesting offset {result_offset}", file=sys.stderr, flush=True)
-            response = requests.post(corine_url, data=params, headers={'Content-Type': 'application/x-www-form-urlencoded'}, timeout=30)
+            response = requests.post(corine_url, data=params, headers={'Content-Type': 'application/x-www-form-urlencoded'}, timeout=30, url, stream=True)
             response.raise_for_status()
             data = response.json()
             
