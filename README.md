@@ -38,5 +38,5 @@ Yeva worked on searching and preprocessing necessary data in Python as well as c
 
 Built by Yeva Husieva & Zuzana Piarova
 
-<img src="https://github.com/user-attachments/assets/264a30fa-686f-43ae-9e7e-3e00fb206280" width="500" />
-<img src="https://github.com/user-attachments/assets/8653b677-8e2f-439f-9445-3dd5f1a5ce48" width="500" />
+<img src="https://github.com/user-attachments/assets/264a30fa-686f-43ae-9e7e-3e00fb206280" width="350" />
+<img src="https://github.com/user-attachments/assets/8653b677-8e2f-439f-9445-3dd5f1a5ce48" width="350" />
