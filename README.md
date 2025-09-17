@@ -1,6 +1,8 @@
 # Green Hack
 
-https://github.com/user-attachments/assets/72a2503f-6752-4d7d-8840-b9147d76fea8
+<div align="center">
+  <video  width="200" src="https://github.com/user-attachments/assets/0c801803-dacd-43de-992d-6661602271d2" autoplay />
+</div>
 
 ## ABOUT GREENHACK
 
@@ -35,3 +37,6 @@ Yeva worked on searching and preprocessing necessary data in Python as well as c
 ## Authors
 
 Built by Yeva Husieva & Zuzana Piarova
+
+<img src="https://github.com/user-attachments/assets/264a30fa-686f-43ae-9e7e-3e00fb206280" width="500" />
+<img src="https://github.com/user-attachments/assets/8653b677-8e2f-439f-9445-3dd5f1a5ce48" width="500" />
