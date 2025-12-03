@@ -1,0 +1,21 @@
+services:
+
+  backend:
+    build:
+      context: ./app/backend
+      dockerfile: Dockerfile
+    container_name: greenhack_backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./:/app/backend
+    mem_limit: 6g
+    command: gunicorn --timeout 500 -w 1 --bind 0.0.0.0:5001 --reload main:app
+
+  frontend:
+    build:
+      context: ./app/frontend
+      dockerfile: Dockerfile
+    container_name: greenhack_frontend
+    ports:
+      - "3000:80"

@@ -1,5 +1,4 @@
 import heapq
-import numpy as np
 
 def heuristic(a, b):
     return abs(a[0] - b[0]) + abs(a[1] - b[1])  # Manhattan distance
@@ -35,17 +34,3 @@ def a_star(grid, start, goal):
                     heapq.heappush(open_set, (f_score[neighbour], neighbour))
     
     return []  # No path found
-
-# if __name__ == "__main__":
-#     cost_grid = np.array([
-#         [1, 1, 1, 50],
-#         [1, 50, 1, 1],
-#         [1, 1, 1, 1],
-#         [50, 50, 1, 1],
-#     ])
-
-#     start = (0, 0)
-#     goal = (3, 3)
-
-#     path = a_star(cost_grid, start, goal)
-#     print("Path:", path)

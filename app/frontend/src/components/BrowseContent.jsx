@@ -188,6 +188,8 @@ export default function BrowseContent() {
     // Prepare coordinates as [{x: lng, y: lat}] for backend
     const pointsForBackend = routePoints.map(point => ({ x: point.lng, y: point.lat }));
 
+    print("points sent: ", pointsForBackend)
+
     const response = await fetch(API_ROUTES.planRoute, {
       method: "POST",
       headers: {

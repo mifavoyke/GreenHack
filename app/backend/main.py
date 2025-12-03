@@ -2,7 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from flask import Response
 import geopandas as gpd
-from plan import compute_multi_route
+from plan import compute_route
+# from plan import greedy_route
 import sys
 import requests
 import traceback
@@ -101,9 +102,11 @@ def route_endpoint():
         print("Received data:", data)
         input_points = data.get("points", [])
         
-        planned_route, length = compute_multi_route(input_points)
+        planned_route, length = compute_route(input_points)
+        print("Planned route:", planned_route)
 
         return jsonify({"route": planned_route, "totalLength": length})
+    
     except Exception as e:
         print("Error in /api/plan-route:", str(e))
         return jsonify({"error": str(e)}), 500
@@ -111,4 +114,4 @@ def route_endpoint():
 # running the Flask server
 # 0.0.0.0: binds to all network interfaces, making your Flask app reachable from outside (e.g., your browser via the EC2 public IP).
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True, port=5000)
+    app.run(host="0.0.0.0", debug=True, port=5001)
